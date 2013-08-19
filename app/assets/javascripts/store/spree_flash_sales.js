@@ -1,3 +1,3 @@
-//= require store/spree_frontend
-//= require jquery.countdown.js
-//= require store/flash_sale_countdown.js
+//= require store/spree_core
+//= require jquery.countdown
+//= require store/flash_sale_countdown

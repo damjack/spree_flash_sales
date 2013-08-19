@@ -1,4 +1,5 @@
-//= require admin/spree_backend
+//= require admin/spree_core
+//= require admin/flash_sales/index
 //= require jquery.datetimepicker
 
 handle_datetime_picker_fields = function(){

@@ -1,17 +1,12 @@
-<% content_for :page_title do %>
-  <%= @flash_sale.name %>
+<h4><%= t(:new_flash_sale) %></h4>
+<%= form_for [:admin, @product, @flash_sale], :html => { :id => "admin_flash_sale" } do |f| %>
+	<table class="basic-table" data-hook="new_flash_sale">
+		<%= render :partial => 'form', :locals => { :f => f } %>
+	</table>
+	<p class="form-buttons" data-hook="buttons">
+		<%= button t(:update) %>
+		<%= t(:or) %> <%= link_to t(:cancel), admin_product_flash_sales_url(@product), :id => 'cancel_link' %>
+	</p>
 <% end %>
 
-<% content_for :page_actions do %>
-  <li>
-    <%= button_link_to 'New', [:admin, @flash_sale], :icon => 'icon-arrow-left', :id => 'admin_new_flash_sale__link' %>
-  </li>
-<% end %>
-
-<div data-hook="admin_flash_sale__edit_form">
-  <div id="flash-sale-form-wrapper">
-    <%= form_for [:admin, @flash_sale], :html => { :id => 'admin_flash_sale', :multipart => true } do |form| %>
-      <%= render partial: 'form', locals: { form: form } %>
-    <% end %>
-  </div>
-</div>
+<%= javascript_include_tag 'admin/flash_sales/new.js' %>

@@ -1,9 +1,9 @@
 <article class='flash-sale' id="flash_sale_<%= flash_sale.id %>" data-hook="flash-sale" itemscope itemtype='http://schema.org/Offer'>
-  <%= flash_sale.render_image %>
+  <%= render(:partial => 'spree/flash_sales/image', :locals => {:flash_sale => flash_sale}) %>
   <h1 class='flash-sale-name'>
-    <%= link_to flash_sale.name, flash_sale.render_url, itemprop: 'name', title: flash_sale.name %>
+    <%= link_to flash_sale.name, spree.product_path(flash_sale.saleable), :itemprop => 'name', :title => flash_sale.name %>
   </h1>
   <div class='flash-sale-expires'>
-    Gone in: <span class='flash-sale-countdown' data-countdown="<%= flash_sale.countdown_format %>" data-layout="<%= flash_sale.countdown_layout %>"></span>
+    Gone in: <span class='flash-sale-countdown' data-countdown="<%= flash_sale.end_date.strftime(t("spree.flash_sale.datetimepicker.strftime_format")) %>" data-layout="{dn} DAYS {hnn}{sep}{mnn}{sep}{snn}"></span>
   </div>
 </article>

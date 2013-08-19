@@ -1,27 +1,26 @@
-class Spree::Admin::FlashSalesController < Spree::Admin::ResourceController
-  def index
-    respond_with(@collection) do |format|
-      format.html
-    end
-  end
+# encoding: utf-8
+module Spree
+  module Admin
+    class FlashSalesController < ResourceController
+      before_filter :load_data
 
-  def saleables
-    search = params[:saleable_type].constantize.search(:name_cont => params[:name])
-    render :json => search.result.map(&:name)
-  end
-
-  protected
-    def location_after_save
-      edit_object_url(@object)
-    end
-
-    def collection
-      return @collection if @collection.present?
-      if request.xhr? && params[:q].present?
-        @collection = Spree::FlashSale.search params[:q]
-      else
-        @search = Spree::FlashSale.ransack(params[:q])
-        @collection = @search.result.page(params[:page]).per(Spree::Config[:admin_products_per_page])
+      def saleables
+        search = Spree::Product.search(:name_cont => params[:name])
+        render :json => search.result.map(&:name)
       end
+
+      protected
+        def location_after_save
+          admin_product_flash_sales_url(@product)
+        end
+
+        def load_data
+          @product = Product.find_by_permalink(params[:product_id])
+          @variants = @product.variants.collect do |variant|
+            [variant.options_text, variant.id]
+          end
+          @variants.insert(0, [I18n.t(:all), 'All'])
+        end
     end
+  end
 end

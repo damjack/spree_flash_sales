@@ -1,15 +1,13 @@
-<% content_for :page_title do %>
-  <%= @object.name %>
-<% end %>
+<%= render :partial => 'spree/admin/shared/product_sub_menu' %>
+<%= render :partial => 'spree/admin/shared/product_tabs', :locals => { :current => 'Flash Sales' } %>
+<%= render :partial => 'spree/shared/error_messages', :locals => { :target => @flash_sale } %>
 
-<% content_for :page_actions do %>
-  <li>
-    <%= button_link_to 'Edit', [:edit, :admin, @object], :icon => 'icon-wrench' %>
-  </li>
+<%= form_for [:admin, @product, @flash_sale], :html => { :id => "flash_sale" } do |f| %>
+	<table class="basic-table" data-hook="edit_flash_sale">
+		<%= render :partial => 'form', :locals => { :f => f } %>
+	</table>
+	<p class="form-buttons" data-hook="buttons">
+		<%= button t(:update) %>
+		<%= t(:or) %> <%= link_to t(:cancel), admin_product_flash_sales_url(@product), :id => 'cancel_link' %>
+	</p>
 <% end %>
-
-<div data-hook="admin_flash_sale_edit_form">
-  <%= form_for [:admin, @flash_sale], html: { id: 'flash_sale', multipart: true } do |form| %>
-    <%= render partial: 'form', locals: { form: form } %>
-  <% end %>
-</div>

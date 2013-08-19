@@ -1,5 +1,6 @@
+// encoding: utf-8
 /* http://keith-wood.name/countdown.html
-   Countdown for jQuery v1.6.3.
+   Countdown for jQuery v1.6.2.
    Written by Keith Wood (kbwood{at}iinet.com.au) January 2008.
    Available under the MIT (https://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt) license. 
    Please attribute the author if you use it. */
@@ -53,15 +54,13 @@ function Countdown() {
 	};
 	$.extend(this._defaults, this.regional['']);
 	this._serverSyncs = [];
-	var now = (typeof Date.now == 'function' ? Date.now :
-		function() { return new Date().getTime(); });
-	var perfAvail = (window.performance && typeof window.performance.now == 'function');
 	// Shared timer for all countdowns
 	function timerCallBack(timestamp) {
 		var drawStart = (timestamp < 1e12 ? // New HTML5 high resolution timer
-			(perfAvail ? (performance.now() + performance.timing.navigationStart) : now()) :
+			(drawStart = performance.now ?
+			(performance.now() + performance.timing.navigationStart) : Date.now()) :
 			// Integer milliseconds since unix epoch
-			timestamp || now());
+			timestamp || new Date().getTime());
 		if (drawStart - animationStartTime >= 1000) {
 			plugin._updateTargets();
 			animationStartTime = drawStart;
@@ -80,7 +79,7 @@ function Countdown() {
 	else {
 		animationStartTime = window.animationStartTime ||
 			window.webkitAnimationStartTime || window.mozAnimationStartTime ||
-			window.oAnimationStartTime || window.msAnimationStartTime || now();
+			window.oAnimationStartTime || window.msAnimationStartTime || new Date().getTime();
 		requestAnimationFrame(timerCallBack);
 	}
 }
@@ -232,9 +231,6 @@ $.extend(Countdown.prototype, {
 			var name = options;
 			options = {};
 			options[name] = value;
-		}
-		if (options.layout) {
-			options.layout = options.layout.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
 		}
 		this._resetExtraLabels(inst.options, options);
 		var timezoneChanged = (inst.options.timezone != options.timezone);
@@ -609,7 +605,7 @@ $.extend(Countdown.prototype, {
 		// Replace period containers: {p<}...{p>}
 		for (var i = Y; i <= S; i++) {
 			var period = 'yowdhms'.charAt(i);
-			var re = new RegExp('\\{' + period + '<\\}([\\s\\S]*)\\{' + period + '>\\}', 'g');
+			var re = new RegExp('\\{' + period + '<\\}(.*)\\{' + period + '>\\}', 'g');
 			html = html.replace(re, ((!significant && show[i]) ||
 				(significant && showSignificant[i]) ? '$1' : ''));
 		}
@@ -808,3 +804,4 @@ $.fn.countdown = function(options) {
 var plugin = $.countdown = new Countdown(); // Singleton instance
 
 })(jQuery);
+

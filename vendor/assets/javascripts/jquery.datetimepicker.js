@@ -1,3 +1,5 @@
+// encoding: utf-8
+
 /*
  * jQuery timepicker addon
  * By: Trent Richardson [http://trentrichardson.com]

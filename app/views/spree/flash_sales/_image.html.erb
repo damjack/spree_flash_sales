@@ -1,1 +1,1 @@
-<%= link_to image_tag(flash_sale.image.attachment.url(:product), class: 'flash-sale-image'), flash_sale.render_url, itemprop: 'url' %>
+<%= link_to image_tag(flash_sale.image.attachment.url(:product), :class => 'flash-sale-image'), spree.product_path(flash_sale.saleable), :itemprop => 'url' if !flash_sale.image.blank? %>

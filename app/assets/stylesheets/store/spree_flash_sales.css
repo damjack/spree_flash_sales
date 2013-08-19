@@ -1,0 +1,13 @@
+
+.flash-sale-countdown .countdown_row {
+	clear: both;
+    content: ".";
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+
+.flash-sale-countdown .countdown_section {
+	float: left;
+	margin-right: 10px;
+}
