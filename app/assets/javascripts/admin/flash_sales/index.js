@@ -6,5 +6,4 @@ $(document).ready(function(){
     $.ajax({type: 'GET', url: this.href, data: ({authenticity_token: AUTH_TOKEN}),
             success: function(r){ $('#flash_sales').html(r);} });
   });
-
 });

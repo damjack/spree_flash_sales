@@ -1,0 +1,20 @@
+<div data-hook="admin_image_form_fields">
+	<tr data-hook="active">
+		<td><%= t(:active) %>:</td>
+		<td><%= f.check_box :active %></td>
+	</tr>
+	<tr data-hook="start_date">
+		<td><%= t(:start_date) %>:</td>
+		<% if @flash_sale.start_date? %>
+			<% start_date = l(@flash_sale.start_date, :format => t('spree.flash_sale.datetimepicker.format')) %>
+		<% else %>
+			<% start_date = l(Time.zone.now, :format => t('spree.flash_sale.datetimepicker.format')) %>
+		<% end %>
+		<td><%= f.text_field :start_date, :value => start_date, :class => 'timepicker' %></td>
+	</tr>
+	<tr data-hook="end_date">
+		<td><%= t(:end_date) %>:</td>
+		<% end_date = l((@flash_sale.end_date? ? @flash_sale.end_date : Time.zone.now+1.day), :format => t('spree.flash_sale.datetimepicker.format')) %>
+		<td><%= f.text_field :end_date, :value => end_date, :class => 'timepicker' %></td>
+	</tr>
+</div>

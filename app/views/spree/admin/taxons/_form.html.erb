@@ -1,0 +1,81 @@
+<%= form_for [:admin, @taxonomy, @taxon], :method => :put, :html => { :multipart => true } do |f| %>
+<div data-hook="admin_taxon_form_fields" style="float:left; width: 40%;">
+	<%= f.field_container :name do %>
+		<%= f.label :name, t(:name) %> <span class="required">*</span><br />
+		<%= error_message_on :taxon, :name, :class => 'fullwidth title' %>
+		<%= text_field :taxon, :name %>
+	<% end %>
+
+	<%= f.field_container :permalink_part do %>
+		<%= f.label :permalink_part, t(:permalink) %><span class="required">*</span><br />
+		<%= @taxon.permalink.split("/")[0...-1].join("/") + "/" %><%= text_field_tag :permalink_part, @permalink_part %>
+	<% end %>
+
+	<%= f.field_container :icon do %>
+		<%= f.label :icon, t(:icon) %><br />
+		<%= f.file_field :icon %>
+	<% end %>
+
+	<%= f.field_container :description do %>
+		<%= f.label :description, t(:description) %><br />
+		<%= f.text_area :description %>
+	<% end %>
+</div>
+<div id="new_taxon_flash_sale" style="float:left; width: 50%;">
+	<p data-hook="links">
+	    <%= link_to icon('add') + ' ' + t(:new_flash_sale), new_admin_taxonomy_taxon_flash_sale_url(@taxon.taxonomy, @taxon), :id => 'new_taxon_flash_sale_link', :remote => true %>
+	</p>
+	<%= f.fields_for :flash_sales do |fs| %>
+		<%= fs.label :active, t(:active) %>
+		<%= fs.check_box :active %><br />
+		
+		<%= fs.label :start_date, t(:start_date) %><br />
+		<%= fs.text_field :start_date, :class => 'timepicker' %><br />
+		
+		<%= fs.label :end_date, t(:end_date) %><br />
+		<%= fs.text_field :end_date, :class => 'timepicker' %>
+	<% end %>
+</div>
+
+<div id="selected-products" data-hook>
+  <%= render :partial => 'product_table', :locals => { :products => @products, :taxon => @taxon } %>
+</div>
+
+<p class="form-buttons" data-hook="buttons">
+    <%= button t(:update) %> <%= t(:or) %> <%= link_to t(:cancel), edit_admin_taxonomy_url(@taxonomy) %>
+  </p>
+<% end %>
+
+<%= form_tag '#' do %>
+  <%= label_tag nil, t(:search) %>:
+  <input id="searchtext" size="25">
+<% end %>
+
+<%= javascript_tag do %>
+  function search_for_products(){
+    $.ajax({
+     data: {q: $("#searchtext").val() },
+     dataType: 'html',
+     success: function(request){
+       jQuery('#search_hits').html(request);
+     },
+     type: 'POST',
+     url: '<%= available_admin_taxonomy_taxon_products_url(@taxon.taxonomy, @taxon, :format => 'js') %>'
+    });
+  }
+
+  $("#searchtext").keypress(function (e) {
+    <!-- if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) { -->
+      search_for_products();
+      <!-- return false; -->
+    <!-- } else { -->
+       <!-- return true; -->
+    <!-- } -->
+  });
+
+  $("#searchtext").delayedObserver(function() {
+    search_for_products();
+  }, 0.75);
+<% end %>
+<br />
+<div id="search_hits" data-hook></div>

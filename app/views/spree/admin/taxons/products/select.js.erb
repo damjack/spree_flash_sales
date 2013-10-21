@@ -1,0 +1,2 @@
+$("#selected-products").html("<%= escape_javascript(render(:partial => 'product_table', :locals => { :products => @products, :taxon => @taxon })) %>");
+$("#<%= dom_id @product, :sel %>").hide();

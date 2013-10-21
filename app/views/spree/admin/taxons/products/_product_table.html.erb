@@ -1,0 +1,25 @@
+<table class="index">
+  <thead>
+    <tr data-hook="products_header">
+      <th><%= t(:name) %></th>
+		<th><%= t(:price) %></th>
+      <th><%= t(:falsh_sale) %></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% products.each do |product| %>
+      <tr id="<%= dom_id(product) %>" data-hook="products_row">
+        <td><%= product.name %></td>
+        <td><%= number_to_currency(product.price) rescue 0 %></td>
+        <td><input type="hidden" name="product[][id]" value="<%= product.id %>"></input><input type="text" name="product[][flash_price_cent]" value="<%= product.flash_price_cent || 0 %>"></input></td>
+        <td class="actions">
+          <%= link_to_delete taxon, :url => remove_admin_taxonomy_taxon_product_url(taxon.taxonomy, taxon, product), :name => icon('delete') + ' ' + t(:remove) %>
+        </td>
+      </tr>
+    <% end %>
+    <% if products.empty? %>
+     <tr data-hook="products_none"><td colspan="3"><%= t(:none) %>.</td></tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,12 @@
+<h4><%= t(:new_flash_sale) %></h4>
+<%= form_for [:admin, @taxon.taxonomy, @taxon, @flash_sale], :html => { :id => "admin_flash_sale" } do |f| %>
+	<table class="basic-table" data-hook="new_flash_sale">
+		<%= render :partial => 'form', :locals => { :f => f } %>
+	</table>
+	<p class="form-buttons" data-hook="buttons">
+		<%= button t(:update) %>
+		<%= t(:or) %> <%#= link_to t(:cancel), admin_product_flash_sales_url(@product), :id => 'cancel_link' %>
+	</p>
+<% end %>
+
+<%= javascript_include_tag 'admin/flash_sales/new.js' %>
