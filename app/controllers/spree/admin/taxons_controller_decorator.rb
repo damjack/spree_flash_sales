@@ -11,9 +11,11 @@ Spree::Admin::TaxonsController.class_eval do
   end
   
   def save_flash_sale
-    params[:product].each do |p|
-      product = Spree::Product.find(p[:id])
-      product.update_attribute(:flash_price_cent, p[:flash_price_cent])
+    if !params[:product].blank?
+      params[:product].each do |p|
+        product = Spree::Product.find(p[:id])
+        product.update_attribute(:flash_price_cent, p[:flash_price_cent])
+      end
     end
   end
 end
