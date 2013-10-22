@@ -1,5 +1,6 @@
 Spree::Admin::TaxonsController.class_eval do
   after_filter :save_flash_sale, :only => [:update]
+  
   def edit
     @taxonomy = Spree::Taxonomy.find(params[:taxonomy_id])
     @taxon = @taxonomy.taxons.find(params[:id])

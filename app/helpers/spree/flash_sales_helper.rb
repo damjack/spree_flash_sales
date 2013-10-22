@@ -10,6 +10,9 @@ module Spree
     
     def add_countdown(product)
       flash_sale = product.flash_sales.live.last rescue nil
+      if product.taxons.any? {|t| t.has_flash_sales? }
+        flash_sale = Spree::FlashSale.is_taxon.live.where("taxon_id IN (#{product.taxons.map(&:id).join(',')})").last
+      end
       if flash_sale
         cont = content_tag(:span, "", :class => "flash-sale-countdown", 'data-countdown' => flash_sale.end_date.strftime(t("spree.flash_sale.datetimepicker.strftime_format")), 'data-layout' => countdown_layout)
       else

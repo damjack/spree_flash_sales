@@ -11,7 +11,8 @@ class Spree::FlashSale < ActiveRecord::Base
                   :product_id, :product, :product_name
 
   scope :live, lambda { where("start_date <= :start_date AND end_date >= :end_date AND active = :active ", {:start_date => DateTime.now.in_time_zone, :end_date => DateTime.now.in_time_zone, :active => true}) }
-
+  scope :is_taxon, lambda { where("taxon_id IS NOT NULL") }
+  
   def live?
     return false if !self.active?
     self.start_date.in_time_zone <= DateTime.now.in_time_zone && self.end_date.in_time_zone >= DateTime.now.in_time_zone
